@@ -4,17 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp"
-    android:weightSum="3.6">
+    android:weightSum="4">
 
     <TextView
         android:id="@+id/id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
         android:layout_weight=".4"
         android:background="@drawable/mybackground"
         android:padding="10dp"
-        android:text="Id"
+        android:text="@string/id"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -23,13 +22,13 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
         android:layout_weight="1.2"
         android:background="@drawable/mybackground"
         android:padding="10dp"
-        android:text="Name"
+        android:text="@string/username"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
     <EditText
         android:enabled="false"
@@ -39,21 +38,30 @@
         android:layout_weight="1.2"
         android:background="@drawable/mybackground"
         android:padding="10dp"
-        android:text="Password"
+        android:text="@string/id"
         android:textSize="16sp" />
-
+    <EditText
+        android:id="@+id/age"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".5"
+        android:background="@drawable/mybackground"
+        android:padding="10dp"
+        android:text="@string/age"
+        android:textSize="16sp"
+        android:textStyle="bold" />
     <ImageView
         android:id="@+id/edit"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_weight="0.4"
-        android:src="@drawable/edit_icon" />
+        android:layout_weight="0.35"
+        android:src="@drawable/edit_icon"
+        android:contentDescription="@string/used_to_edit_the_login_details" />
 
     <ImageView
         android:id="@+id/delete"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.4"
+        android:layout_weight="0.35"
         android:src="@drawable/delete_icon" />
 </LinearLayout>

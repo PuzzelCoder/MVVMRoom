@@ -2,11 +2,12 @@ package com.example.room.mvvm.room
 
 import android.content.Context
 import androidx.room.*
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.room.mvvm.model.LoginTableModel
 
-@Database(entities = arrayOf(LoginTableModel::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(LoginTableModel::class), version = 2, exportSchema = false)
 abstract class LoginDatabase : RoomDatabase() {
-
     abstract fun loginDao() : DAOAccess
 
     companion object {
@@ -22,7 +23,7 @@ abstract class LoginDatabase : RoomDatabase() {
 
                 INSTANCE = Room
                     .databaseBuilder(context, LoginDatabase::class.java, "LOGIN_DATABASE")
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2)
                     .build()
 
                 return INSTANCE!!
@@ -30,6 +31,11 @@ abstract class LoginDatabase : RoomDatabase() {
             }
         }
 
+         val MIGRATION_1_2 =object :Migration(1,2){
+             override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE Login ADD COLUMN age INT(2) NOT NULL DEFAULT ''")
+             }
+         }
     }
 
 }

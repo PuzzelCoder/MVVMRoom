@@ -17,12 +17,12 @@ class LoginRepository() {
         private var allLogins: LiveData<List<LoginTableModel>>? = null
 
 
-        fun insertData(loginDatabase: LoginDatabase, username: String, password: String) {
+        fun insertData(loginDatabase: LoginDatabase, username: String, password: String,age:Int) {
 
 
             CoroutineScope(IO).launch {
-                val loginDetails = LoginTableModel(0,username, password)
-                loginDatabase!!.loginDao().InsertData(loginDetails)
+                val loginDetails = LoginTableModel(0,username, password,age)
+                loginDatabase.loginDao().InsertData(loginDetails)
             }
 
         }
@@ -33,29 +33,29 @@ class LoginRepository() {
         ): LiveData<LoginTableModel>? {
 
 
-            loginTableModel = loginDatabase!!.loginDao().getLoginDetails(username)
+            loginTableModel = loginDatabase.loginDao().getLoginDetails(username)
 
             return loginTableModel
         }
 
         fun getAllDetails(loginDatabase: LoginDatabase): LiveData<List<LoginTableModel>>? {
-            allLogins = loginDatabase!!.loginDao().getAllLoginDetails()
+            allLogins = loginDatabase.loginDao().getAllLoginDetails()
             return allLogins
         }
 
         fun deleteLoginDAta(loginDatabase: LoginDatabase,id: Int):Int{
             var integer:Int=-1
             CoroutineScope(IO).launch {
-              integer  = loginDatabase!!.loginDao().deleteLoginData(id)
+              integer  = loginDatabase.loginDao().deleteLoginData(id)
             }
             return integer
         }
 
-        fun updateData(loginDatabase: LoginDatabase, id: Int, username: String, password: String) {
+        fun updateData(loginDatabase: LoginDatabase, id: Int, username: String, password: String,age:Int) {
             CoroutineScope(IO).launch {
-                val loginDetails = LoginTableModel(id,username, password)
+                val loginDetails = LoginTableModel(id,username, password,age)
                 Log.d("TAG", "updateData:$loginDetails ")
-                loginDatabase!!.loginDao().updateData(loginDetails)
+                loginDatabase.loginDao().updateData(loginDetails)
             }
         }
 

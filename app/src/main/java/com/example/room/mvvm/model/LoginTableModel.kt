@@ -13,13 +13,16 @@ data class LoginTableModel(
     val Username: String,
 
     @ColumnInfo(name = "password")
-    val Password: String
+    val Password: String,
+
+    @ColumnInfo(name="age")
+    val age:Int
 
 ) {
 
-    var isEditing:Boolean =false
+    var isEditing: Boolean = false
 
-    constructor(id: Int) : this(id, "", "")
+    constructor(id: Int) : this(id, "", "",0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -33,7 +36,7 @@ data class LoginTableModel(
     }
 
     override fun hashCode(): Int {
-        return Id ?: 0
+        return Id
     }
 
 }

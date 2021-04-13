@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.room.mvvm.R
+import com.example.room.mvvm.Util.Companion.hideKeyboard
 import com.example.room.mvvm.model.LoginTableModel
 import com.example.room.mvvm.room.LoginDatabase
 import com.example.room.mvvm.viewmodel.LoginViewModel
@@ -23,8 +26,6 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
     lateinit var context: Context
     lateinit var usersList: List<LoginTableModel>
 
-    lateinit var strUsername: String
-    lateinit var strPassword: String
     private lateinit var userAdapter: UserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,21 +46,27 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
 
         btnAddLogin.setOnClickListener {
 
-            strUsername = txtUsername.text.toString().trim()
-            strPassword = txtPassword.text.toString().trim()
+            val strUsername = txtUsername.text.toString().trim()
+            val strPassword = txtPassword.text.toString().trim()
+            val strAge = txtage.text.toString().trim()
 
             if (strPassword.isEmpty()) {
                 txtUsername.error = "Please enter the username"
             } else if (strPassword.isEmpty()) {
                 txtPassword.error = "Please enter the username"
             } else {
-                loginViewModel.insertData(loginDatabase, strUsername, strPassword)
+                loginViewModel.insertData(loginDatabase, strUsername, strPassword,strAge.toInt())
 
                 lblInsertResponse.text = "Inserted Successfully"
                 txtUsername.text = null
                 txtPassword.text = null
             }
+
+            hideKeyboard(it)
+
         }
+
+        setObservers()
 //        btnEditLogin.setOnClickListener {
 //            btnEditLogin.visibility= View.GONE
 //
@@ -82,8 +89,8 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
 //        }
 
         btnReadLogin.setOnClickListener {
-
-            strUsername = txtUsername.text.toString().trim()
+            loginViewModel.getAllDetails(loginDatabase)
+//            strUsername = txtUsername.text.toString().trim()
 
 //            loginViewModel.getLoginDetails(loginDatabase, strUsername)!!.observe(this, Observer {
 //
@@ -98,39 +105,44 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
 //                }
 //            })
 //            MVVM_Room_Kotlin_Example
-            loginViewModel.getAllDetails(loginDatabase)!!.observe(this, Observer {
-                if (it == null || (it as List<LoginTableModel>).size == 0) {
-                    val s = (it as List<LoginTableModel>).size
-                    Log.d("TAG", "onCreate3: $s")
-                    lblReadResponse.text = "Data Not Found"
-                    recyclerView.visibility = View.GONE
-                    lblReadResponse.visibility = View.VISIBLE
-                } else {
-                    val loginList: List<LoginTableModel> = it
-                    Log.d("TAG", "onCreate4: $loginList")
-//                    Log.d("User${loginList.get(0).Id}", "name=${loginList.get(0).Username}")
-//                    Log.d("User${loginList.get(0).Id}", "name=${loginList.get(0).Password}")
-                    for (i in loginList) {
-                        Log.d("User${i.Id}", "name=${i.Username}")
-                        Log.d("User${i.Id}", "name=${i.Password}")
-                    }
-                    (usersList as ArrayList).clear()
-                    (usersList as ArrayList).addAll(it)
-                    userAdapter.notifyDataSetChanged()
-                    lblReadResponse.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                }
-            })
+
         }
     }
 
+
+    fun setObservers(){
+        loginViewModel.getAllDetails(loginDatabase)!!.observe(this, Observer {
+            if (it == null || (it as List<LoginTableModel>).size == 0) {
+                val s = (it as List<LoginTableModel>).size
+                Log.d("TAG", "onCreate3: $s")
+                lblReadResponse.text = "Data Not Found"
+                recyclerView.visibility = View.GONE
+                lblReadResponse.visibility = View.VISIBLE
+            } else {
+                val loginList: List<LoginTableModel> = it
+                Log.d("TAG", "onCreate4: $loginList")
+//                    Log.d("User${loginList.get(0).Id}", "name=${loginList.get(0).Username}")
+//                    Log.d("User${loginList.get(0).Id}", "name=${loginList.get(0).Password}")
+                for (i in loginList) {
+                    Log.d("User${i.Id}", "name=${i.Username}")
+                    Log.d("User${i.Id}", "name=${i.Password}")
+                }
+                (usersList as ArrayList).clear()
+                (usersList as ArrayList).addAll(it)
+                userAdapter.notifyDataSetChanged()
+                lblReadResponse.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
+        })
+    }
     fun initializeDB(context: Context): LoginDatabase {
         return LoginDatabase.getDataseClient(context)
     }
 
-    override fun onEditClick(view: View, id: Int,name: String, pass: String,  editing: Boolean) {
+    override fun onEditClick(view: View, id: Int,name: String, pass: String,age:Int,  editing: Boolean) {
+        hideKeyboard(view)
         Log.d("TAG", "Edit Clicked at position $id: ")
-        val user =LoginTableModel(id,"","")
+        val user =LoginTableModel(id,"","",0)
         val index= usersList.indexOf(user)
         if(index<0){
             Log.d("TAG", "onEditClick: User not found")
@@ -140,7 +152,7 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
             userAdapter.notifyDataSetChanged()
 
             if(editing){
-                loginViewModel.updateData(loginDatabase,id,name,pass)
+                loginViewModel.updateData(loginDatabase,id,name,pass,age)
                 Log.d("TAG", "onDoneClick: ")
 
             }

@@ -12,12 +12,12 @@ class LoginViewModel() : ViewModel() {
     private var liveDataLogin: LiveData<LoginTableModel>? = null
     private var allDetails: LiveData<List<LoginTableModel>>? = null
 
-    fun insertData(loginDatabase: LoginDatabase, username: String, password: String) {
-        LoginRepository.insertData(loginDatabase, username, password)
+    fun insertData(loginDatabase: LoginDatabase, username: String, password: String,age:Int) {
+        LoginRepository.insertData(loginDatabase, username, password,age)
         getAllDetails(loginDatabase)
     }
-    fun updateData(loginDatabase: LoginDatabase,id: Int, username: String, password: String) {
-        LoginRepository.updateData(loginDatabase,id, username, password)
+    fun updateData(loginDatabase: LoginDatabase,id: Int, username: String, password: String,age:Int) {
+        LoginRepository.updateData(loginDatabase,id, username, password,age)
         getAllDetails(loginDatabase)
     }
 
@@ -34,7 +34,7 @@ class LoginViewModel() : ViewModel() {
         return allDetails
     }
 
-    fun deleteLoginUser(loginDatabase: LoginDatabase, id: Int): Int? {
+    fun deleteLoginUser(loginDatabase: LoginDatabase, id: Int): Int {
         Log.d("TAG", "deleteLoginUserB: ")
         val result = LoginRepository.deleteLoginDAta(loginDatabase, id)
         Log.d("TAG", "deleteLoginUser: ")
