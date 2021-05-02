@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/lblInsertHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/enter_the_username_and_password"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/txtUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblInsertHeading"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:hint="@string/username"
+        android:textColor="#000000"
+        android:textColorHint="#8D8D8D" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/txtLastname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtUsername"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:hint="@string/lastname"
+        android:textColor="#000000"
+        android:textColorHint="#8D8D8D" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/txtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtLastname"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textColorHint="#8D8D8D" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/txtage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPassword"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:hint="@string/age"
+        android:maxLength="2"
+        android:inputType="number"
+        android:textColor="#000000"
+        android:textColorHint="#8D8D8D" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtage"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:onClick="addUser"
+        android:textAllCaps="true"
+        android:textSize="26sp"
+        android:text="@string/insert_user" />
+
+</RelativeLayout>

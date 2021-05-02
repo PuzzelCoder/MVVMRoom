@@ -6,40 +6,43 @@ import androidx.lifecycle.ViewModel
 import com.example.room.mvvm.model.LoginTableModel
 import com.example.room.mvvm.repository.LoginRepository
 import com.example.room.mvvm.room.LoginDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
-class LoginViewModel() : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val repository: LoginRepository) : ViewModel() {
 
     private var liveDataLogin: LiveData<LoginTableModel>? = null
     private var allDetails: LiveData<List<LoginTableModel>>? = null
 
-    fun insertData(loginDatabase: LoginDatabase, username: String, password: String,age:Int) {
-        LoginRepository.insertData(loginDatabase, username, password,age)
-        getAllDetails(loginDatabase)
+    fun insertData( username: String,lastName:String, password: String,age:Int) {
+        repository.insertData( username,lastName, password,age)
+        getAllDetails()
     }
-    fun updateData(loginDatabase: LoginDatabase,id: Int, username: String, password: String,age:Int) {
-        LoginRepository.updateData(loginDatabase,id, username, password,age)
-        getAllDetails(loginDatabase)
+    fun updateData(id: Int, username: String,lastName: String, password: String,age:Int) {
+        repository.updateData(id, username,lastName, password,age)
+        getAllDetails()
     }
 
     fun getLoginDetails(
-        loginDatabase: LoginDatabase,
         username: String
     ): LiveData<LoginTableModel>? {
-        liveDataLogin = LoginRepository.getLoginDetails(loginDatabase, username)
+        liveDataLogin = repository.getLoginDetails( username)
         return liveDataLogin
     }
 
-    fun getAllDetails(loginDatabase: LoginDatabase): LiveData<List<LoginTableModel>>? {
-        allDetails = LoginRepository.getAllDetails(loginDatabase)
+    fun getAllDetails(): LiveData<List<LoginTableModel>>? {
+        allDetails = repository.getAllDetails()
         return allDetails
     }
 
-    fun deleteLoginUser(loginDatabase: LoginDatabase, id: Int): Int {
+    fun deleteLoginUser(id: Int): Int {
         Log.d("TAG", "deleteLoginUserB: ")
-        val result = LoginRepository.deleteLoginDAta(loginDatabase, id)
+        val result = repository.deleteLoginDAta(id)
         Log.d("TAG", "deleteLoginUser: ")
         if(result>0){
-           getAllDetails(loginDatabase)
+           getAllDetails()
         }
         return result
     }

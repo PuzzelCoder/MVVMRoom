@@ -4,23 +4,27 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.room.mvvm.R
-import com.example.room.mvvm.utils.Util.Companion.hideKeyboard
 import com.example.room.mvvm.model.LoginTableModel
-import com.example.room.mvvm.room.LoginDatabase
+import com.example.room.mvvm.utils.Util.Companion.hideKeyboard
 import com.example.room.mvvm.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.details_form.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
 
     lateinit var loginViewModel: LoginViewModel
-    lateinit var loginDatabase: LoginDatabase
     lateinit var context: Context
     lateinit var usersList: List<LoginTableModel>
 
@@ -34,89 +38,32 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
         userAdapter = UserAdapter(usersList, this)
         val layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.layoutManager = layoutManager
-        recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = userAdapter
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                applicationContext,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         context = this@MainActivity
-
-        loginDatabase = initializeDB(applicationContext)
-
+        detailsrl.visibility = VISIBLE
+        addrl.visibility = GONE
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        btnAddLogin.setOnClickListener {
-
-            val strUsername = txtUsername.text.toString().trim()
-            val strPassword = txtPassword.text.toString().trim()
-            val strAge = txtage.text.toString().trim()
-
-            if (strPassword.isEmpty()) {
-                txtUsername.error = "Please enter the username"
-            } else if (strPassword.isEmpty()) {
-                txtPassword.error = "Please enter the username"
-            } else {
-                loginViewModel.insertData(loginDatabase, strUsername, strPassword,strAge.toInt())
-
-                lblInsertResponse.text = "Inserted Successfully"
-                txtUsername.text = null
-                txtPassword.text = null
-            }
-
-            hideKeyboard(it)
-
-        }
-
         setObservers()
-//        btnEditLogin.setOnClickListener {
-//            btnEditLogin.visibility= View.GONE
-//
-//            val strUserId: Int = txtUserid.text.toString().trim().toInt()
-//            strUsername = txtUsername.text.toString().trim()
-//            strPassword = txtPassword.text.toString().trim()
-//            if (strUserId < 0) {
-//                lblInsertResponse.text = "Sorry ,Something went wrong"
-//            } else if (strPassword.isEmpty()) {
-//                txtUsername.error = "Please enter the username"
-//            } else if (strPassword.isEmpty()) {
-//                txtPassword.error = "Please enter the password"
-//            } else {
-//                loginViewModel.editData(loginDatabase, strUserId, strUsername, strPassword)
-//
-//                lblInsertResponse.text = "Edited Successfully"
-//                txtUsername.text = null
-//                txtPassword.text = null
-//            }
-//        }
-
-        btnReadLogin.setOnClickListener {
-            loginViewModel.getAllDetails(loginDatabase)
-//            strUsername = txtUsername.text.toString().trim()
-
-//            loginViewModel.getLoginDetails(loginDatabase, strUsername)!!.observe(this, Observer {
-//
-//                if (it == null) {
-//                    lblReadResponse.text = "Data Not Found"
-//                    lblUseraname.text = "- - -"
-//                    lblPassword.text = "- - -"
-//                } else {
-//                   lblUseraname.text = it.Username
-//                    lblPassword.text = it.Password
-//                    lblReadResponse.text = "Data Found Successfully"
-//                }
-//            })
-//            MVVM_Room_Kotlin_Example
-
-        }
     }
 
 
-    fun setObservers(){
-        loginViewModel.getAllDetails(loginDatabase)!!.observe(this, Observer {
+    fun setObservers() {
+        loginViewModel.getAllDetails()!!.observe(this, Observer {
             if (it == null || (it as List<LoginTableModel>).size == 0) {
                 val s = (it as List<LoginTableModel>).size
                 Log.d("TAG", "onCreate3: $s")
-                lblReadResponse.text = "Data Not Found"
+                nousers.visibility = VISIBLE
                 recyclerView.visibility = View.GONE
-                lblReadResponse.visibility = View.VISIBLE
             } else {
+
                 val loginList: List<LoginTableModel> = it
                 Log.d("TAG", "onCreate4: $loginList")
 //                    Log.d("User${loginList.get(0).Id}", "name=${loginList.get(0).Username}")
@@ -128,74 +75,86 @@ class MainActivity : AppCompatActivity(), UserAdapter.ClickInterface {
                 (usersList as ArrayList).clear()
                 (usersList as ArrayList).addAll(it)
                 userAdapter.notifyDataSetChanged()
-                lblReadResponse.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                nousers.visibility = GONE
+                recyclerView.visibility = VISIBLE
             }
         })
     }
-    fun initializeDB(context: Context): LoginDatabase {
-        return LoginDatabase.getDataseClient(context)
-    }
 
-    override fun onEditClick(view: View, id: Int,name: String, pass: String,age:Int,  editing: Boolean) {
+    override fun onEditClick(
+        view: View,
+        id: Int,
+        firstName: String,
+        lastName: String,
+        pass: String,
+        age: Int,
+        editing: Boolean
+    ) {
         hideKeyboard(view)
         Log.d("TAG", "Edit Clicked at position $id: ")
-        val user =LoginTableModel(id,"","",0)
-        val index= usersList.indexOf(user)
-        if(index<0){
+        val user = LoginTableModel(id, "", "","", 0)
+        val index = usersList.indexOf(user)
+        if (index < 0) {
             Log.d("TAG", "onEditClick: User not found")
-        }
-        else{
-            usersList.get(index).isEditing =! editing
+        } else {
+            usersList.get(index).isEditing = !editing
             userAdapter.notifyDataSetChanged()
 
-            if(editing){
-                loginViewModel.updateData(loginDatabase,id,name,pass,age)
+            if (editing) {
+                loginViewModel.updateData(id,firstName,lastName,pass, age)
                 Log.d("TAG", "onDoneClick: ")
-
             }
-
         }
-
     }
-//    override fun onEditClick( view: View, id: Int, name: String, pass: String,isEditing: Boolean) {
-//        Log.d("TAG", "Edit Clicked at position $id: ")
-//
-//        loginViewModel.updateData(loginDatabase, id,name, pass)
-//    }
 
     override fun onDeleteItem(it: View, id: Int) {
         Log.d("TAG", "Delete Clicked at position $id: ")
-        val result: Int? = loginViewModel.deleteLoginUser(loginDatabase, id)
+        val result: Int? = loginViewModel.deleteLoginUser(id)
         if (result!! > 0) {
             Toast.makeText(context, "User deleted succssfully", Toast.LENGTH_SHORT).show()
         }
     }
 
+    fun showForm(view: View) {
+        detailsrl.visibility = GONE
+        addrl.visibility = VISIBLE
+        hideKeyboard(view)
+    }
 
-//
-//    override fun onEditClick(view: View, position: Int) {
-//        TODO("Not yet implemented")
-//    }(view: View, id: Int) {
-//        when (view.id) {
-//            R.id.delete -> {
-//                Log.d("TAG", "Delete Clicked at position $id: ")
-//                val result: Int? = loginViewModel.deleteLoginUser(loginDatabase, id)
-//                if (result!! > 0) {
-//                    Toast.makeText(context, "User delete succssfully", Toast.LENGTH_SHORT).show()
-//
-//                }
-//            }
-//            R.id.edit -> {
-//                Log.d("TAG", "Edit Clicked at position $id: ")
-//                val user = LoginTableModel(id)
-//                val index = usersList.indexOf(user)
-//                if (index != -1) {
-//                    val user = usersList.get(index)
-//                    Log.d("TAG", "onSingleClick: $id")
-////                    txtUserid.setText(user.Id.toString())
-//                }
-//            }
-//        }
-//    }
+    fun addUser(view: View) {
+        val strUsername = txtUsername.text.toString().trim()
+        val strLastname = txtLastname.text.toString().trim()
+        val strPassword = txtPassword.text.toString().trim()
+        val strAge = txtage.text.toString().trim()
+
+        if (strUsername.isEmpty()) {
+            txtUsername.error = "Enter the Firstname"
+        } else if (strLastname.isEmpty()) {
+            txtLastname.error = "Enter the LastName"
+        }  else if (strPassword.isEmpty()) {
+            txtPassword.error = "Enter the password"
+        } else if (strAge.isEmpty() || strAge.toInt() <= 0) {
+            txtage.error = "Enter  correct age"
+        } else {
+            loginViewModel.insertData(strUsername,strLastname, strPassword, strAge.toInt())
+
+            Toast.makeText(this@MainActivity, "Inserted Successfully", Toast.LENGTH_SHORT).show()
+            txtUsername.text = null
+            txtPassword.text = null
+            txtage.text = null
+            detailsrl.visibility = VISIBLE
+            addrl.visibility = GONE
+        }
+        hideKeyboard(view)
+    }
+
+    override fun onBackPressed() {
+        if (addrl.visibility == VISIBLE) {
+            detailsrl.visibility = VISIBLE
+            addrl.visibility = GONE
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 }

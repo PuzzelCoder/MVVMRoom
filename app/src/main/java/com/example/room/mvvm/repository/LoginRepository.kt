@@ -3,61 +3,59 @@ package com.example.room.mvvm.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.room.mvvm.model.LoginTableModel
+import com.example.room.mvvm.room.DAOAccess
 import com.example.room.mvvm.room.LoginDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginRepository() {
-
-    companion object {
-
+class LoginRepository @Inject constructor(private val daoAccess: DAOAccess) {
 
         private var loginTableModel: LiveData<LoginTableModel>? = null
         private var allLogins: LiveData<List<LoginTableModel>>? = null
 
 
-        fun insertData(loginDatabase: LoginDatabase, username: String, password: String,age:Int) {
+        fun insertData( username: String,lastName:String, password: String,age:Int) {
 
 
             CoroutineScope(IO).launch {
-                val loginDetails = LoginTableModel(0,username, password,age)
-                loginDatabase.loginDao().InsertData(loginDetails)
+                val loginDetails = LoginTableModel(0,username,lastName, password,age)
+                daoAccess.InsertData(loginDetails)
             }
 
         }
 
         fun getLoginDetails(
-            loginDatabase: LoginDatabase,
             username: String
         ): LiveData<LoginTableModel>? {
 
 
-            loginTableModel = loginDatabase.loginDao().getLoginDetails(username)
+            loginTableModel = daoAccess.getLoginDetails(username)
 
             return loginTableModel
         }
 
-        fun getAllDetails(loginDatabase: LoginDatabase): LiveData<List<LoginTableModel>>? {
-            allLogins = loginDatabase.loginDao().getAllLoginDetails()
+        fun getAllDetails(): LiveData<List<LoginTableModel>>? {
+            allLogins = daoAccess.getAllLoginDetails()
             return allLogins
         }
 
-        fun deleteLoginDAta(loginDatabase: LoginDatabase,id: Int):Int{
+        fun deleteLoginDAta(id: Int):Int{
             var integer:Int=-1
             CoroutineScope(IO).launch {
-              integer  = loginDatabase.loginDao().deleteLoginData(id)
+              integer  = daoAccess.deleteLoginData(id)
             }
             return integer
         }
 
-        fun updateData(loginDatabase: LoginDatabase, id: Int, username: String, password: String,age:Int) {
+        fun updateData(id: Int, username: String,lastName: String, password: String,age:Int) {
             CoroutineScope(IO).launch {
-                val loginDetails = LoginTableModel(id,username, password,age)
+                val loginDetails = LoginTableModel(id,username,lastName, password,age)
                 Log.d("TAG", "updateData:$loginDetails ")
-                loginDatabase.loginDao().updateData(loginDetails)
+                daoAccess.updateData(loginDetails)
             }
         }
 
-    }
+
 }

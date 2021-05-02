@@ -1,211 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#e2e2e2"
     tools:context=".view.MainActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="300dp" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#8D8D8D"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/lblInsertHeading"
+    <RelativeLayout
+        android:id="@+id/detailsrl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/nousers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/enter_the_username_and_password"
-            android:textColor="#000000"
-            android:textSize="18sp"
+            android:layout_centerInParent="true">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_baseline_person_24"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_data_found"
+            android:textSize="26sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/txtUserid"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:hint="@string/id"
-            android:textColor="#000000"
-            android:textColorHint="#8D8D8D"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/lblInsertHeading" />
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/txtUsername"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:hint="@string/username"
-            android:textColor="#000000"
-            android:textColorHint="#8D8D8D"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtUserid" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/txtPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:hint="@string/password"
-            android:textColor="#000000"
-            android:inputType="text"
-            android:textColorHint="#8D8D8D"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtUsername" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/txtage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:hint="@string/age"
-            android:textColor="#000000"
-            android:textColorHint="#8D8D8D"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtPassword" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnAddLogin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:text="@string/insert_credentials"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtage" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/lblInsertResponse"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:lineSpacingExtra="5dp"
-            android:text="@string/disjoint_horizontal_lines"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAddLogin" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
-
-        <!--  <androidx.appcompat.widget.AppCompatTextView
-              android:id="@+id/lblReadHeading"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="Reading and Displaying Data From Room"
-              android:textColor="#000000"
-              android:textSize="18sp"
-              android:textStyle="bold"
-              android:layout_marginTop="20dp"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/btnReadLogin" />
-
-          <androidx.appcompat.widget.AppCompatTextView
-              android:id="@+id/lblUseraname"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:text="- - -"
-              android:textSize="18sp"
-              android:textStyle="bold"
-              android:layout_margin="20dp"
-              android:gravity="center"
-              android:lineSpacingExtra="5dp"
-              android:padding="10dp"
-              android:textColor="@android:color/holo_orange_light"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/lblReadHeading" />
-  -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnReadLogin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="40dp"
-            android:text="@string/click_to_read_credentials_from_room"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:textColor="#333333"/>
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/recyclerView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnReadLogin" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/login_list" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/lblReadResponse"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:lineSpacingExtra="5dp"
-            android:text="@string/disjoint_horizontal_lines"
-            android:textColor="@android:color/holo_orange_light"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addUser"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="30dp"
+            android:onClick="showForm"
+            android:backgroundTint="@android:color/transparent"
+            android:foreground="@drawable/add_circle_outline_24" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/addrl"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/details_form" />
+
+    </RelativeLayout>
+</RelativeLayout>

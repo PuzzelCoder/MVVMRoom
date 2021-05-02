@@ -5,14 +5,13 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.room.mvvm.model.LoginTableModel
+import javax.inject.Inject
 
 @Database(entities = arrayOf(LoginTableModel::class), version = 2, exportSchema = false)
-abstract class LoginDatabase : RoomDatabase() {
+abstract class LoginDatabase: RoomDatabase() {
     abstract fun loginDao() : DAOAccess
 
-    companion object {
-
-        @Volatile
+       /* @Volatile
         private var INSTANCE: LoginDatabase? = null
 
         fun getDataseClient(context: Context) : LoginDatabase {
@@ -35,7 +34,7 @@ abstract class LoginDatabase : RoomDatabase() {
              override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE Login ADD COLUMN age INT(2) NOT NULL DEFAULT ''")
              }
-         }
-    }
+         }*/
+
 
 }
