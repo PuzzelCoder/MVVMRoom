@@ -1,4 +1,4 @@
-package com.example.room.mvvm
+package com.example.room.mvvm.utils
 
 import android.app.Activity
 import android.content.Context

@@ -9,8 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.room.mvvm.R
-import com.example.room.mvvm.Util
-import com.example.room.mvvm.Util.Companion.hideKeyboard
 import com.example.room.mvvm.model.LoginTableModel
 
 class UserAdapter(

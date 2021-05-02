@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -13,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.room.mvvm.R
-import com.example.room.mvvm.Util.Companion.hideKeyboard
+import com.example.room.mvvm.utils.Util.Companion.hideKeyboard
 import com.example.room.mvvm.model.LoginTableModel
 import com.example.room.mvvm.room.LoginDatabase
 import com.example.room.mvvm.viewmodel.LoginViewModel
